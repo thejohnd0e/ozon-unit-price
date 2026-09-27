@@ -24,23 +24,23 @@ test('calculates volume prices per liter and per 100 milliliters', () => {
   );
 });
 
-test('calculates range prices in ascending display order', () => {
-  assert.deepEqual(
+test('calculates range prices using the upper bound', () => {
+  assert.equal(
     calculateUnitPrice(
       100,
       { type: 'weight-range', minGrams: 400, maxGrams: 600 },
       UNIT_PRICE_MODES.PER_KILOGRAM,
     ),
-    { min: 166.66666666666666, max: 250 },
+    166.66666666666666,
   );
 
-  assert.deepEqual(
+  assert.equal(
     calculateUnitPrice(
       90,
       { type: 'volume-range', minMilliliters: 300, maxMilliliters: 600 },
       UNIT_PRICE_MODES.PER_LITER,
     ),
-    { min: 150, max: 300 },
+    150,
   );
 });
 
@@ -57,26 +57,12 @@ test('formats prices with human rounding and the selected unit label', () => {
   }
 });
 
-test('formats calculated ranges from the lower value to the higher value', () => {
+test('calculates the specification range example using the upper weight', () => {
   const unitPrice = calculateUnitPrice(
-    100,
-    { type: 'weight-range', minGrams: 400, maxGrams: 600 },
+    454,
+    { type: 'weight-range', minGrams: 550, maxGrams: 650 },
     UNIT_PRICE_MODES.PER_KILOGRAM,
   );
 
-  assert.equal(formatUnitPrice(unitPrice, UNIT_PRICE_MODES.PER_KILOGRAM), '167–250 ₽/кг');
-  assert.equal(
-    formatUnitPrice({ min: 250, max: 166.66666666666666 }, UNIT_PRICE_MODES.PER_KILOGRAM),
-    '167–250 ₽/кг',
-  );
-});
-
-test('rounds the specification range example to whole rubles per kilogram', () => {
-  const unitPrice = calculateUnitPrice(
-    59,
-    { type: 'weight-range', minGrams: 400, maxGrams: 600 },
-    UNIT_PRICE_MODES.PER_KILOGRAM,
-  );
-
-  assert.equal(formatUnitPrice(unitPrice, UNIT_PRICE_MODES.PER_KILOGRAM), '98–148 ₽/кг');
+  assert.equal(formatUnitPrice(unitPrice, UNIT_PRICE_MODES.PER_KILOGRAM), '698 ₽/кг');
 });

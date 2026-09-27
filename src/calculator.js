@@ -45,14 +45,12 @@ function getModeConfig(mode) {
 function getQuantityBounds(quantity, dimension) {
   if (dimension === 'weight') {
     if (quantity.type === 'weight') {
-      return { minimum: quantity.grams, maximum: quantity.grams, isRange: false };
+      return { maximum: quantity.grams };
     }
 
     if (quantity.type === 'weight-range') {
       return {
-        minimum: Math.min(quantity.minGrams, quantity.maxGrams),
         maximum: Math.max(quantity.minGrams, quantity.maxGrams),
-        isRange: true,
       };
     }
   }
@@ -60,17 +58,13 @@ function getQuantityBounds(quantity, dimension) {
   if (dimension === 'volume') {
     if (quantity.type === 'volume') {
       return {
-        minimum: quantity.milliliters,
         maximum: quantity.milliliters,
-        isRange: false,
       };
     }
 
     if (quantity.type === 'volume-range') {
       return {
-        minimum: Math.min(quantity.minMilliliters, quantity.maxMilliliters),
         maximum: Math.max(quantity.minMilliliters, quantity.maxMilliliters),
-        isRange: true,
       };
     }
   }
@@ -81,16 +75,7 @@ function getQuantityBounds(quantity, dimension) {
 export function calculateUnitPrice(priceRubles, quantity, mode) {
   const config = getModeConfig(mode);
   const bounds = getQuantityBounds(quantity, config.dimension);
-  const lowerPrice = (priceRubles * config.baseQuantity) / bounds.maximum;
-
-  if (!bounds.isRange) {
-    return lowerPrice;
-  }
-
-  return {
-    min: lowerPrice,
-    max: (priceRubles * config.baseQuantity) / bounds.minimum,
-  };
+  return (priceRubles * config.baseQuantity) / bounds.maximum;
 }
 
 export function formatUnitPrice(unitPrice, mode) {
