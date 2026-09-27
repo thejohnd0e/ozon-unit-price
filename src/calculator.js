@@ -75,6 +75,7 @@ function getQuantityBounds(quantity, dimension) {
 export function calculateUnitPrice(priceRubles, quantity, mode) {
   const config = getModeConfig(mode);
   const bounds = getQuantityBounds(quantity, config.dimension);
+  // Ozon prices variable-weight products by the upper bound; the final charge is adjusted after weighing.
   return (priceRubles * config.baseQuantity) / bounds.maximum;
 }
 
