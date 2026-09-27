@@ -28,3 +28,6 @@ coverage/
 .omo/
 .playwright-mcp/
 .codegraph/
+
+# Local release packages
+*.zip

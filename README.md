@@ -1,96 +1,98 @@
 # Ozon Unit Price
 
-A dependency-free Chrome extension that helps compare Ozon products by showing a normalized price for weight and volume.
+**Русский** | [English](README.en.md)
 
-![Ozon Unit Price preview](images/readme.png)
+Расширение Chrome без зависимостей помогает сравнивать товары на Ozon, показывая нормализованную цену за вес и объём.
 
-The repository includes the quantity parser, unit-price calculator, Manifest V3 package definition, popup settings surface, and Ozon content integration.
+![Предпросмотр Ozon Unit Price](images/readme.png)
 
-## Supported formats
+В репозитории есть парсер количества, калькулятор цены за единицу, пакет Manifest V3, настройки во всплывающем окне и интеграция с разметкой Ozon.
 
-The calculation layer supports:
+## Поддерживаемые форматы
 
-- weight in grams and kilograms;
-- volume in milliliters and liters;
-- decimal commas and decimal points;
-- ranges such as `400–600 г`;
-- multipacks such as `4 × 100 г` and `6 бутылок по 200 мл`;
-- display as `₽/кг` and `₽/л` (default);
-- display as `₽/100 г` and `₽/100 мл`;
-- both display scales at once.
+Слой вычислений поддерживает:
 
-## Preview the popup
+- вес в граммах и килограммах;
+- объём в миллилитрах и литрах;
+- десятичные запятые и точки;
+- диапазоны, например `400–600 г`;
+- мультиупаковки, например `4 × 100 г` и `6 бутылок по 200 мл`;
+- отображение в `₽/кг` и `₽/л` по умолчанию;
+- отображение в `₽/100 г` и `₽/100 мл`;
+- одновременное отображение обеих шкал.
 
-Open `src/popup/popup.html` in a browser. Outside Chrome's extension context, settings use an in-memory fallback and last only until the popup document closes.
+## Предпросмотр окна настроек
 
-## Install in Chrome
+Откройте `src/popup/popup.html` в браузере. Вне контекста расширения Chrome настройки используют резервное хранилище в памяти и действуют только пока открыта страница окна.
 
-1. Clone or download this repository.
-2. Open `chrome://extensions`.
-3. Turn on **Developer mode**.
-4. Select **Load unpacked**.
-5. Choose the repository root containing `manifest.json`. The reserved `src/content.js` entry must exist before Chrome can load the complete unpacked package.
-6. Pin the extension and open its popup to choose a display mode.
+## Установка в Chrome
 
-No build step or package installation is required.
+1. Клонируйте или скачайте этот репозиторий.
+2. Откройте `chrome://extensions`.
+3. Включите **Режим разработчика**.
+4. Нажмите **Загрузить распакованное расширение**.
+5. Выберите корневую папку репозитория с файлом `manifest.json`.
+6. Закрепите расширение и откройте его окно для выбора режима отображения.
 
-## Settings
+Сборка и установка npm-зависимостей не требуются.
 
-Popup settings are stored under the versioned key `ozon-unit-price-settings-v1` in `chrome.storage.sync`. The stored object contains `schemaVersion`, `displayMode`, and `debugEnabled`. The stable `displayMode` values are:
+## Настройки
 
-- `unit-standard` (default) maps to calculator modes `per-kilogram` and `per-liter`;
-- `unit-small` maps to `per-100-grams` and `per-100-milliliters`;
-- `both` maps to all four calculator modes.
+Настройки окна сохраняются в `chrome.storage.sync` под версионированным ключом `ozon-unit-price-settings-v1`. Объект содержит `schemaVersion`, `displayMode` и `debugEnabled`. Допустимые значения `displayMode`:
 
-The optional debug switch is saved for the future DOM integration. If `chrome.storage.sync` is absent or unavailable, the popup safely falls back to page-local memory; that fallback is intentionally not persistent across popup documents.
+- `unit-standard` по умолчанию: `per-kilogram` и `per-liter`;
+- `unit-small`: `per-100-grams` и `per-100-milliliters`;
+- `both`: все четыре режима калькулятора.
 
-## Security and privacy
+Дополнительный переключатель отладки сохраняется для интеграции с DOM. Если `chrome.storage.sync` недоступно, окно безопасно использует локальную память страницы.
 
-- All parsing and calculation are designed to run locally in the browser.
-- The only extension permission is `storage`.
-- The content-script match is limited to `https://*.ozon.ru/*`.
-- The extension does not call Ozon APIs or any other remote API.
-- There is no analytics, telemetry, remote code, CDN script, or externally hosted image.
-- Product and settings data are not sent to a server by this project.
+## Безопасность и конфиденциальность
 
-## Local assets
+- Парсинг и вычисления выполняются локально в браузере.
+- Единственное разрешение расширения — `storage`.
+- Скрипт запускается только на `https://*.ozon.ru/*`.
+- Расширение не обращается к API Ozon или другим удалённым API.
+- Нет аналитики, телеметрии, удалённого кода, CDN-скриптов и внешних изображений.
+- Данные товаров и настройки не отправляются на сервер.
 
-- Extension icons are generated from [`images/icio.png`](images/icio.png) at 16, 32, 48, and 128 px and referenced by the manifest.
-- This README uses [`images/readme.png`](images/readme.png) as its local preview illustration.
+## Локальные изображения
 
-## Testing
+- Иконки расширения созданы из [`images/icio.png`](images/icio.png) в размерах 16, 32, 48 и 128 px и подключены в манифесте.
+- Это описание использует [`images/readme.png`](images/readme.png) как локальную иллюстрацию.
 
-Run the built-in Node test suite:
+## Тестирование
+
+Запустить встроенные тесты Node.js:
 
 ```bash
 npm test
 ```
 
-Validate the extension files directly:
+Проверить файлы расширения напрямую:
 
 ```bash
 node --check src/popup/popup.js
 node -e "JSON.parse(require('node:fs').readFileSync('manifest.json', 'utf8'))"
 ```
 
-## Project structure
+## Структура проекта
 
-- `manifest.json` — least-privilege Manifest V3 package definition.
-- `src/popup/` — popup markup, behavior, and component styles.
-- `src/styles.css` — scoped `ozon-unit-price-*` injected price styles.
-- `src/content-loader.js` — classic MV3 bridge for the module content script.
-- `src/content.js` — Ozon DOM adapter and MutationObserver integration.
-- `src/parser.js` — DOM-independent quantity parsing.
-- `src/calculator.js` — unit-price calculation and Russian formatting.
-- `DESIGN.md` — popup design tokens, components, states, and accessibility contract.
+- `manifest.json` — пакет расширения Manifest V3 с минимальными разрешениями.
+- `src/popup/` — разметка, логика и стили окна настроек.
+- `src/styles.css` — стили внедряемых цен с пространством имён `ozon-unit-price-*`.
+- `src/content-loader.js` — классический мост MV3 для модульного content script.
+- `src/content.js` — адаптер DOM Ozon и интеграция с MutationObserver.
+- `src/parser.js` — парсинг количества без зависимости от DOM.
+- `src/calculator.js` — вычисление цены за единицу и форматирование на русском языке.
+- `DESIGN.md` — токены дизайна, компоненты, состояния и требования доступности.
 
-## Known limitations
+## Известные ограничения
 
-- The content script uses a dynamic module bridge because Manifest V3 content-script entries are classic scripts.
-- Live Ozon validation depends on the site's current DOM, price markup, and product-card structure, which may change without notice.
-- Price extraction is heuristic and depends on the current rendered Ozon DOM.
-- Chrome sync availability and quotas are controlled by the browser; the in-memory fallback is session-local and is not a replacement for cross-device sync.
+- Модульный content script загружается через динамический мост, поскольку записи content script в Manifest V3 являются классическими скриптами.
+- Результат проверки Ozon зависит от текущей DOM-разметки, цены и структуры карточек товаров и может измениться без предупреждения.
+- Извлечение цены эвристическое и зависит от текущей отображаемой разметки Ozon.
+- Доступность и квоты Chrome Sync определяются браузером; резервная память действует только в рамках сессии.
 
-## Agent workflow
+## Рабочий процесс для агентов
 
-Coding agents must read `AGENTS.md`, `STATUS.md`, `DECISIONS.md`, and `TODO.md` before substantial work, then update the relevant documents after substantial changes.
+Перед существенными изменениями агенты должны прочитать `AGENTS.md`, `STATUS.md`, `DECISIONS.md` и `TODO.md`, а после изменений обновить относящиеся к задаче документы.
