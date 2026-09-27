@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Ozon Unit Price",
+  "version": "1.0.0",
+  "description": "Показывает цену товара за килограмм, литр или 100 г/мл.",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "Настройки цены за единицу",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "content_scripts": [{
+    "matches": ["https://*.ozon.ru/*"],
+    "js": ["src/content-loader.js"],
+    "css": ["src/styles.css"],
+    "run_at": "document_idle"
+  }],
+  "web_accessible_resources": [{
+    "resources": ["src/content.js", "src/parser.js", "src/calculator.js", "src/sites/ozon.js"],
+    "matches": ["https://*.ozon.ru/*"]
+  }]
+}
