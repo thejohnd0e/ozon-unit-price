@@ -31,13 +31,19 @@ function units(mode) {
   return [UNIT_PRICE_MODES.PER_KILOGRAM, UNIT_PRICE_MODES.PER_LITER];
 }
 
+export function selectProductTitle(values) {
+  return [...values]
+    .filter((value) => value.length > 8)
+    .sort((left, right) => Number(Boolean(parseQuantity(right))) - Number(Boolean(parseQuantity(left))) || right.length - left.length)[0] || '';
+}
+
 export function readOzonItem(root) {
   const link = root.matches?.(PRODUCT_LINK) ? root : root.querySelector?.(PRODUCT_LINK);
   const productTitle = text(document.querySelector('[data-widget="webProductHeading"] h1'));
   const isProductPage = Boolean(productTitle && root.closest?.('[data-widget="webProductHeading"]'));
   const priceWidget = document.querySelector('[data-widget="webPrice"]');
   const card = link ? cardForLink(link) : root.closest?.('[data-widget="webPrice"]')?.parentElement || (isProductPage ? priceWidget?.parentElement : null);
-  const title = isProductPage ? productTitle : card ? [...card.querySelectorAll(PRODUCT_LINK)].map(text).filter((value) => value.length > 8).sort((a, b) => b.length - a.length)[0] : '';
+  const title = isProductPage ? productTitle : card ? selectProductTitle([...card.querySelectorAll(PRODUCT_LINK)].map(text)) : '';
   const priceRoot = isProductPage ? priceWidget : card;
   const price = priceIn(priceRoot || root);
   const quantity = parseQuantity(title);
