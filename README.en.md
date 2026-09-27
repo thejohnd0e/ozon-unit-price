@@ -2,6 +2,8 @@
 
 [Русская версия](README.md) | **English**
 
+[![Latest Release](https://img.shields.io/github/v/release/thejohnd0e/ozon-unit-price?display_name=tag&sort=semver)](https://github.com/thejohnd0e/ozon-unit-price/releases) [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/) [![Manifest V3](https://img.shields.io/badge/Manifest-V3-34A853)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)
+
 A dependency-free Chrome extension that helps compare Ozon products by showing a normalized price for weight and volume.
 
 ![Ozon Unit Price preview](images/readme.png)
