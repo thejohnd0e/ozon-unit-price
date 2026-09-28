@@ -5,6 +5,7 @@
 - Fixed Ozon cards that contain promotional links such as `Съешьте скорее` or `Цена что надо`.
 - Product title selection now prefers link text from which a weight or volume can be parsed.
 - Added regression tests for promotional-link/title selection.
+- Fixed liquid dairy products whose Ozon title uses grams but whose unit price is shown per liter.
 - Bumped the extension version to `1.02`.
 - Published release `v1.02` with `ozon-unit-price-v1.02.zip`.
 
@@ -27,7 +28,7 @@
 
 ## Next Recommended Step
 
-Install or reload `v1.02` in Chrome and manually smoke-test the Ozon category grid and product page, including cards with promotional badges, ranges such as `0,4–1 кг`, and volume products.
+Install or reload `v1.03` in Chrome and manually smoke-test the Ozon category grid and product page, including milk cards shown as `950 мл` and product pages whose title says `950 г`.
 
 ## Important Files
 

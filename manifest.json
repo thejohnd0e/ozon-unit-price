@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Ozon Unit Price",
-  "version": "1.02",
+  "version": "1.03",
   "description": "Показывает цену товара за килограмм, литр или 100 г/мл.",
   "permissions": ["storage"],
   "icons": {

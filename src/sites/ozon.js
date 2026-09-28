@@ -7,6 +7,25 @@ export const PRODUCT_LINK = 'a[href*="/product/"]';
 
 const text = (node) => (node?.innerText || node?.textContent || '').replace(/\s+/gu, ' ').trim();
 const visible = (node) => Boolean(node && node.getClientRects().length && getComputedStyle(node).display !== 'none');
+const LIQUID_PRODUCT_PATTERN = /(?<![\p{L}])(?:молоко|кефир|сливки|ряженка|простокваша|сыворотка)(?![\p{L}])/iu;
+
+export function parseOzonQuantity(title) {
+  const quantity = parseQuantity(title);
+
+  if (!quantity || !LIQUID_PRODUCT_PATTERN.test(title) || !quantity.type.startsWith('weight')) {
+    return quantity;
+  }
+
+  if (quantity.type === 'weight') {
+    return { type: 'volume', milliliters: quantity.grams };
+  }
+
+  return {
+    type: 'volume-range',
+    minMilliliters: quantity.minGrams,
+    maxMilliliters: quantity.maxGrams,
+  };
+}
 
 function cardForLink(link) {
   let node = link;
@@ -46,7 +65,7 @@ export function readOzonItem(root) {
   const title = isProductPage ? productTitle : card ? selectProductTitle([...card.querySelectorAll(PRODUCT_LINK)].map(text)) : '';
   const priceRoot = isProductPage ? priceWidget : card;
   const price = priceIn(priceRoot || root);
-  const quantity = parseQuantity(title);
+  const quantity = parseOzonQuantity(title);
   if (!title || price === null || !quantity) return null;
   return { card: card || priceRoot || root, title, price, quantity };
 }
