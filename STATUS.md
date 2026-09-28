@@ -28,7 +28,7 @@
 
 ## Next Recommended Step
 
-Install or reload `v1.03` in Chrome and manually smoke-test the Ozon category grid and product page, including milk cards shown as `950 мл` and product pages whose title says `950 г`.
+Install or reload `v1.3` in Chrome and manually smoke-test the Ozon category grid and product page, including milk cards shown as `950 мл` and product pages whose title says `950 г`.
 
 ## Important Files
 
